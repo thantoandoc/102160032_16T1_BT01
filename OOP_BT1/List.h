@@ -19,7 +19,8 @@ public:
 	void delBook(int = 0);
 	void showAllBooks();
 	void showAllBooks(const int);
-	int hasBook(Book &);
+	void update(string ID);
+	int hasBook(string);
 	Book & operator[] (const int);
 	friend ostream & operator << (ostream &, List &);
 	friend istream & operator >> (istream &, List &);

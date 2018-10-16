@@ -27,7 +27,7 @@ List::~List()
 
 void List::addBook(Book &b, int idx)
 {
-	int pos = hasBook(b);
+	int pos = hasBook(b.getID());
 	if (pos > -1) {
 		idx = pos;
 		(*this)[idx].setNumberBook((*this)[idx].getNumberOfBook() + b.getNumberOfBook());
@@ -35,10 +35,16 @@ void List::addBook(Book &b, int idx)
 	else {
 		n += 1;
 		Book * books = new Book[n];
-		for (int i = 0; i < n - 1; i++) {
-			*(books + i) = (*this)[i];
+		for (int i = 0, j = 0; i < n; i++) {
+			
+			if(i == idx){
+				*(books + i) = b;
+			}
+			else {
+				*(books + i) = (*this)[j++];
+			}
 		}
-		*(books + n - 1) = b;
+		
 		delete[] this->ds;
 		this->ds = new Book[n];
 		for (int i = 0; i < n; i++) {
@@ -72,9 +78,11 @@ void List::delBook(int idx)
 
 void List::showAllBooks()
 {
+	cout << endl;
 	for (int i = 0; i < n; i++) {
 		cout << (*this)[i];
 	}
+	cout << endl;
 }
 
 void List::showAllBooks(const int n)
@@ -84,10 +92,26 @@ void List::showAllBooks(const int n)
 	}
 }
 
-int List::hasBook(Book &b)
+void List::update(string ID)
+{
+	int idx = hasBook(ID);
+	if (idx > -1) {
+		string name;
+		int release, number;
+		cout << "NAME BOOK: ";
+		getline(cin, name);
+		cout << "RELEASE YEAR: ";
+		cin >> release;
+		cout << "NUMBER OF BOOK: ";
+		cin >> number;
+		(*this)[idx] = Book(ID, name, release, number);
+	}
+}
+
+int List::hasBook(string ID)
 {
 	for (int i = 0; i < n; i++) {
-		if ((*this)[i].getID().compare(b.getID()) == 0) return i; 
+		if ((*this)[i].getID().compare(ID) == 0) return i; 
 	}
 	return -1;
 }
@@ -129,15 +153,13 @@ int List::getSize()
 
 Book * List::binarySearch(int left, int right, int &n,  string ID)
 {
-	cout << "binarySearch: " << left<< ":"<< right<<  endl;
 	if (right >= left) {
 		int mid = (left + right) / 2;
 		if (ID.compare((ds + mid)->getID()) == 0) {
 			int before = mid - 1;
 			int after = mid + 1;
-			cout << before << " : " << after << endl;
-			while (ID.compare((ds + before)->getID()) == 0) before--;
-			while (ID.compare((ds + after)->getID()) == 0) after++;
+			while (before >= left && ID.compare((ds + before)->getID()) == 0) before--;
+			while (after <= right && ID.compare((ds + after)->getID()) == 0) after++;
 			n = after - before - 1;
 			Book * arrBook = new Book[n];
 			for (int i = before + 1, j = 0; i < after; i++) {

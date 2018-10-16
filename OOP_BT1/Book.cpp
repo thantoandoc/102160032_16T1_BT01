@@ -87,7 +87,7 @@ int Book::getNumberOfBook()
 }
 
 ostream & operator << (ostream & o, const Book & b) {
-	o << "ID: " << b.idOfBook << "\tNAME: " << b.nameOfBook << "\tYEAR: " << b.releaseYear << "\tNumberOfBook: " << b.numberOfBook << "\tHasBook: " << b.hasBook << endl;
+	o << "ID: " << b.idOfBook << "\t\tNAME: " << b.nameOfBook << "\t\tYEAR: " << b.releaseYear << "\t\tNumberOfBook: " << b.numberOfBook << "\t\tHasBook: " << b.hasBook << endl;
 	return o;
 }
 istream & operator >> (istream & ip, Book & b) {
@@ -95,6 +95,7 @@ istream & operator >> (istream & ip, Book & b) {
 	int release, number;
 	do
 	{
+		ip.ignore();
 		cout << "ID BOOK: ";
 		getline(ip, id);
 	} while (!checkID(id));

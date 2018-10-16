@@ -29,7 +29,7 @@ public:
 	int getYear();
 	int getNumberOfBook();
 
-	
+	friend bool checkID(string);
 	friend ostream & operator<< (ostream &, const Book &);
 	friend istream & operator>> (istream &, Book &);
 	
